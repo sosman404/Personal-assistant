@@ -120,7 +120,7 @@ html,body{
   background:var(--bg2);
   border-top:1px solid var(--border);
   display:flex;align-items:center;
-  padding:0 8px;
+  padding:0 4px;
   flex-shrink:0;
   position:relative;z-index:10;
 }
@@ -130,7 +130,7 @@ html,body{
   gap:4px;
   background:none;border:none;
   color:var(--t3);font-size:10px;font-weight:600;
-  cursor:pointer;padding:6px 4px;border-radius:var(--r-sm);
+  cursor:pointer;padding:6px 2px;border-radius:var(--r-sm);
   transition:color .2s;
   font-family:inherit;
 }
@@ -138,13 +138,115 @@ html,body{
 .nav-ico{width:22px;height:22px;transition:stroke .2s;}
 .nav-item.active{color:var(--blue);}
 .nav-item.active .nav-ico{stroke:var(--blue);}
-
-/* active indicator dot */
 .nav-item.active::after{
   content:'';display:block;
   width:4px;height:4px;border-radius:50%;
   background:var(--blue);
   position:absolute;bottom:8px;
+}
+
+/* Raised center mic button */
+.nav-mic-slot{
+  flex:1;
+  display:flex;flex-direction:column;align-items:center;
+  gap:4px;position:relative;
+  font-size:10px;font-weight:600;color:var(--t3);
+}
+.nav-mic-fab{
+  width:56px;height:56px;border-radius:50%;
+  background:linear-gradient(135deg,var(--blue),#7c5cfc);
+  border:3px solid var(--bg2);
+  box-shadow:0 0 20px var(--blue-glow),0 4px 16px rgba(0,0,0,.4);
+  color:#fff;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;bottom:14px;
+  transition:transform .2s,box-shadow .2s;
+}
+.nav-mic-fab:hover{transform:scale(1.08);}
+.nav-mic-fab.listening{
+  background:linear-gradient(135deg,#fb7185,#e879f9);
+  box-shadow:0 0 24px rgba(251,113,133,.5);
+  animation:micNavPulse 1s infinite;
+}
+@keyframes micNavPulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(251,113,133,.4),0 4px 16px rgba(0,0,0,.4);}
+  50%{box-shadow:0 0 0 10px rgba(251,113,133,0),0 4px 16px rgba(0,0,0,.4);}
+}
+
+/* ── Voice Hero ──────────────────────────────────────────────── */
+.voice-hero{
+  display:flex;flex-direction:column;align-items:center;
+  padding:10px 22px 20px;gap:14px;
+}
+
+/* ARIA's spoken response */
+.voice-response{
+  display:flex;gap:10px;align-items:flex-start;
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:18px;padding:14px;width:100%;
+  animation:msgIn .25s ease;
+}
+.vr-av{
+  width:30px;height:30px;border-radius:10px;flex-shrink:0;
+  background:linear-gradient(135deg,var(--blue),#7c5cfc);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:13px;color:#fff;
+}
+.vr-bubble{font-size:13px;color:var(--t1);line-height:1.55;flex:1;}
+
+/* Live transcript */
+.voice-transcript{
+  font-size:14px;color:var(--t2);font-style:italic;
+  min-height:20px;text-align:center;
+}
+
+/* Orb */
+.orb-wrap{
+  position:relative;
+  width:100px;height:100px;
+  display:flex;align-items:center;justify-content:center;
+}
+.vring{
+  position:absolute;border-radius:50%;
+  border:2px solid var(--blue);
+  opacity:0;pointer-events:none;
+}
+.vring-1{width:100px;height:100px;}
+.vring-2{width:136px;height:136px;}
+.vring-3{width:172px;height:172px;}
+
+.orb-wrap.listening .vring{animation:vringPop 1.8s ease-out infinite;}
+.orb-wrap.listening .vring-2{animation-delay:.35s;}
+.orb-wrap.listening .vring-3{animation-delay:.7s;}
+@keyframes vringPop{
+  0%{opacity:.7;transform:scale(.85);}
+  100%{opacity:0;transform:scale(1.15);}
+}
+
+.voice-orb{
+  width:82px;height:82px;border-radius:50%;
+  background:linear-gradient(145deg,#4d7cfe,#7c5cfc);
+  border:none;color:#fff;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 32px var(--blue-glow),0 8px 24px rgba(0,0,0,.4);
+  transition:transform .18s,box-shadow .18s;
+  position:relative;z-index:1;
+}
+.voice-orb:active{transform:scale(.94);}
+.voice-orb.listening{
+  background:linear-gradient(145deg,#fb7185,#e879f9);
+  box-shadow:0 0 32px rgba(251,113,133,.45),0 8px 24px rgba(0,0,0,.4);
+}
+/* idle breathe */
+.voice-orb:not(.listening){animation:orbBreathe 3.5s ease-in-out infinite;}
+@keyframes orbBreathe{
+  0%,100%{box-shadow:0 0 22px var(--blue-glow),0 8px 24px rgba(0,0,0,.4);}
+  50%{box-shadow:0 0 40px rgba(77,124,254,.55),0 8px 24px rgba(0,0,0,.4);}
+}
+
+.orb-label{
+  font-size:13px;font-weight:600;color:var(--t3);
+  letter-spacing:.3px;
 }
 
 /* ── HOME ────────────────────────────────────────────────────── */

@@ -165,10 +165,88 @@ document.getElementById('clearChatBtn').addEventListener('click',async()=>{
 });
 
 // ── VOICE (Web Speech API) ────────────────────────────────────
-const voiceBtn=document.getElementById('voiceBtn');
-let recog=null;
+const voiceBtn    = document.getElementById('voiceBtn');
+const homeVoiceBtn= document.getElementById('homeVoiceBtn');
+const navMicBtn   = document.getElementById('navMicBtn');
+const orbWrap     = document.getElementById('orbWrap');
+const orbLabel    = document.getElementById('orbLabel');
+const homeTranscript = document.getElementById('homeTranscript');
+const homeVoiceResponse = document.getElementById('homeVoiceResponse');
+const homeVoiceText = document.getElementById('homeVoiceText');
+
+let recog=null, homeRecog=null;
+
+// Shared: send a voice command from home and show response on home
+async function sendVoiceCommand(text){
+  homeTranscript.textContent = `"${text}"`;
+  homeVoiceResponse.style.display='none';
+  orbLabel.textContent='Thinking…';
+  try{
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:text})});
+    const d=await r.json();
+    homeVoiceText.textContent=d.response;
+    homeVoiceResponse.style.display='flex';
+    orbLabel.textContent='Tap & speak to ARIA';
+    // Also speak the response aloud
+    if('speechSynthesis' in window){
+      const utt=new SpeechSynthesisUtterance(d.response);
+      utt.rate=1; utt.pitch=1;
+      window.speechSynthesis.speak(utt);
+    }
+    loadHome();
+  }catch(_){
+    orbLabel.textContent='Tap & speak to ARIA';
+  }
+}
+
+function startHomeListening(){
+  if(!homeRecog) return;
+  orbWrap.classList.add('listening');
+  homeVoiceBtn.classList.add('listening');
+  navMicBtn.classList.add('listening');
+  orbLabel.textContent='Listening…';
+  homeTranscript.textContent='';
+  homeRecog.start();
+}
+function stopHomeListening(){
+  orbWrap.classList.remove('listening');
+  homeVoiceBtn.classList.remove('listening');
+  navMicBtn.classList.remove('listening');
+  orbLabel.textContent='Tap & speak to ARIA';
+  try{ homeRecog.stop(); }catch(_){}
+}
+
 if('webkitSpeechRecognition' in window||'SpeechRecognition' in window){
   const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+
+  // Home / nav mic recognition
+  homeRecog=new SR();
+  homeRecog.lang='en-US';homeRecog.continuous=false;homeRecog.interimResults=true;
+  homeRecog.onresult=e=>{
+    const isFinal=e.results[e.results.length-1].isFinal;
+    const txt=e.results[e.results.length-1][0].transcript;
+    homeTranscript.textContent=`"${txt}"`;
+    if(isFinal){ stopHomeListening(); sendVoiceCommand(txt); }
+  };
+  homeRecog.onend=()=>stopHomeListening();
+  homeRecog.onerror=()=>stopHomeListening();
+
+  // Home orb button
+  homeVoiceBtn.addEventListener('click',()=>{
+    if(orbWrap.classList.contains('listening')) stopHomeListening();
+    else startHomeListening();
+  });
+
+  // Nav mic FAB (works from any screen)
+  navMicBtn.addEventListener('click',()=>{
+    switchTab('home');
+    setTimeout(()=>{
+      if(orbWrap.classList.contains('listening')) stopHomeListening();
+      else startHomeListening();
+    },100);
+  });
+
+  // Chat screen mic (sends to chat)
   recog=new SR(); recog.lang='en-US'; recog.continuous=false; recog.interimResults=false;
   recog.onresult=e=>{ inp.value=e.results[0][0].transcript; voiceBtn.classList.remove('listening'); sendMessage(); };
   recog.onend=()=>voiceBtn.classList.remove('listening');

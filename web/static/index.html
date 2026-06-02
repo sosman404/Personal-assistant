@@ -65,6 +65,30 @@
         </div>
 
         <!-- Bento grid -->
+        <!-- ── Voice Hero ──────────────────────────────── -->
+        <div class="voice-hero">
+          <div class="voice-response" id="homeVoiceResponse" style="display:none">
+            <div class="vr-av">A</div>
+            <div class="vr-bubble" id="homeVoiceText"></div>
+          </div>
+          <div class="voice-transcript" id="homeTranscript"></div>
+
+          <div class="orb-wrap" id="orbWrap">
+            <div class="vring vring-3"></div>
+            <div class="vring vring-2"></div>
+            <div class="vring vring-1"></div>
+            <button class="voice-orb" id="homeVoiceBtn">
+              <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <rect x="9" y="2" width="6" height="12" rx="3"/>
+                <path d="M5 10a7 7 0 0014 0"/>
+                <line x1="12" y1="19" x2="12" y2="22"/>
+              </svg>
+            </button>
+          </div>
+
+          <div class="orb-label" id="orbLabel">Tap &amp; speak to ARIA</div>
+        </div>
+
         <div class="bento">
 
           <!-- Schedule card -->
@@ -234,6 +258,16 @@
       </svg>
       <span>Chat</span>
     </button>
+    <div class="nav-mic-slot">
+      <button class="nav-mic-fab" id="navMicBtn">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <rect x="9" y="2" width="6" height="12" rx="3"/>
+          <path d="M5 10a7 7 0 0014 0"/>
+          <line x1="12" y1="19" x2="12" y2="22"/>
+        </svg>
+      </button>
+      <span>Speak</span>
+    </div>
     <button class="nav-item" data-tab="calendar">
       <svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
