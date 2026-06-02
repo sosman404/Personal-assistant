@@ -1,269 +1,331 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ARIA — Personal Assistant</title>
-  <link rel="stylesheet" href="/static/style.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+  <meta name="theme-color" content="#1a1d2e"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <title>ARIA</title>
+  <link rel="stylesheet" href="/static/style.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
 </head>
 <body>
-  <!-- Sidebar -->
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-      <div class="logo">
-        <div class="logo-icon">A</div>
-        <span class="logo-text">ARIA</span>
-      </div>
-      <button class="sidebar-toggle" id="sidebarToggle">&#9776;</button>
+
+<div class="app-shell">
+
+  <!-- ── Status bar ─────────────────────────────────────── -->
+  <div class="status-bar">
+    <span id="statusTime">9:41</span>
+    <div class="status-icons">
+      <svg width="15" height="11" viewBox="0 0 15 11" fill="currentColor">
+        <rect x="0"  y="7" width="3" height="4" rx="1"/>
+        <rect x="4"  y="5" width="3" height="6" rx="1"/>
+        <rect x="8"  y="2" width="3" height="9" rx="1"/>
+        <rect x="12" y="0" width="3" height="11" rx="1"/>
+      </svg>
+      <svg width="16" height="11" viewBox="0 0 16 11" fill="currentColor">
+        <path d="M8 2.5C10.2 2.5 12.2 3.4 13.7 4.8L15 3.5C13.1 1.7 10.7.6 8 .6S2.9 1.7 1 3.5l1.3 1.3C3.8 3.4 5.8 2.5 8 2.5z"/>
+        <path d="M8 5.5c1.4 0 2.6.5 3.6 1.4L12.9 5.6C11.6 4.4 9.9 3.6 8 3.6s-3.6.8-4.9 2l1.3 1.3C5.4 6 6.6 5.5 8 5.5z"/>
+        <circle cx="8" cy="10" r="1.5"/>
+      </svg>
+      <svg width="25" height="12" viewBox="0 0 25 12" fill="currentColor">
+        <rect x="0" y="1" width="21" height="10" rx="3" stroke="currentColor" stroke-width="1.2" fill="none"/>
+        <rect x="22" y="4" width="2" height="4" rx="1"/>
+        <rect x="1.5" y="2.5" width="15" height="7" rx="2"/>
+      </svg>
     </div>
+  </div>
 
-    <nav class="sidebar-nav">
-      <button class="nav-btn active" data-panel="chat">
-        <span class="nav-icon">💬</span><span class="nav-label">Chat</span>
-      </button>
-      <button class="nav-btn" data-panel="events">
-        <span class="nav-icon">📅</span><span class="nav-label">Calendar</span>
-      </button>
-      <button class="nav-btn" data-panel="tasks">
-        <span class="nav-icon">✅</span><span class="nav-label">Tasks</span>
-      </button>
-      <button class="nav-btn" data-panel="reminders">
-        <span class="nav-icon">🔔</span><span class="nav-label">Reminders</span>
-      </button>
-      <button class="nav-btn" data-panel="emails">
-        <span class="nav-icon">📧</span><span class="nav-label">Emails</span>
-      </button>
-    </nav>
+  <!-- ── Screens container ──────────────────────────────── -->
+  <div class="screens-wrap">
 
-    <div class="status-cards">
-      <div class="status-card">
-        <div class="status-number" id="statEvents">—</div>
-        <div class="status-label">Upcoming Events</div>
-      </div>
-      <div class="status-card">
-        <div class="status-number" id="statTasks">—</div>
-        <div class="status-label">Active Tasks</div>
-      </div>
-      <div class="status-card">
-        <div class="status-number" id="statReminders">—</div>
-        <div class="status-label">Reminders</div>
-      </div>
-    </div>
-
-    <div class="next-event-card" id="nextEventCard" style="display:none">
-      <div class="nec-label">Next Event</div>
-      <div class="nec-title" id="nextEventTitle"></div>
-      <div class="nec-time" id="nextEventTime"></div>
-    </div>
-  </aside>
-
-  <!-- Main content -->
-  <main class="main">
-    <!-- Chat panel -->
-    <section class="panel active" id="panel-chat">
-      <div class="panel-header">
-        <h2>Chat with ARIA</h2>
-        <div class="panel-actions">
-          <button class="btn-ghost" id="clearHistory" title="Clear conversation">🗑 Clear</button>
-        </div>
-      </div>
-
-      <div class="chat-messages" id="chatMessages">
-        <div class="message assistant">
-          <div class="message-avatar">A</div>
-          <div class="message-body">
-            <div class="message-text">
-              Hi! I'm ARIA, your personal assistant. I can help you manage your calendar, tasks, reminders, and emails. Try asking me:<br><br>
-              • <em>"What's on my schedule this week?"</em><br>
-              • <em>"Add a meeting tomorrow at 3pm"</em><br>
-              • <em>"Create a task: finish report, high priority"</em><br>
-              • <em>"Remind me to call John at 5pm"</em><br>
-              • <em>"Send an email to boss@example.com"</em>
+    <!-- HOME ──────────────────────────────────────────── -->
+    <div class="screen active" id="screen-home">
+      <div class="screen-scroll">
+        <header class="home-header">
+          <div class="brand">
+            <div class="brand-dot">A</div>
+            <div>
+              <div class="brand-name">ARIA</div>
+              <div class="brand-sub">Your Smart Assistant</div>
             </div>
-            <div class="message-time">just now</div>
+          </div>
+          <button class="hdr-icon" id="homeSearchBtn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+          </button>
+        </header>
+
+        <div class="greeting">
+          <div class="greeting-tag">Welcome Back!</div>
+          <div class="greeting-name" id="greetingName">Sherif</div>
+          <div class="greeting-date" id="greetingDate"></div>
+        </div>
+
+        <!-- Bento grid -->
+        <div class="bento">
+
+          <!-- Schedule card -->
+          <div class="card card-schedule" onclick="switchTab('calendar')">
+            <div class="card-top">
+              <span class="card-label">Schedule</span>
+              <span class="card-arrow">→</span>
+            </div>
+            <div id="schedulePreview" class="sched-preview">
+              <div class="sched-empty">No events today</div>
+            </div>
+          </div>
+
+          <!-- Reminder mini card -->
+          <div class="card card-reminder" onclick="switchTab('more')">
+            <div class="card-label">Reminders</div>
+            <div class="big-num" id="reminderNum">0</div>
+            <div class="card-sub">active</div>
+            <div class="card-emoji">🔔</div>
+          </div>
+
+          <!-- Tasks wide card -->
+          <div class="card card-tasks wide" onclick="switchTab('tasks')">
+            <div class="card-top">
+              <span class="card-label">Tasks</span>
+              <span class="task-badge" id="taskBadge">0</span>
+            </div>
+            <div id="tasksHomePreview" class="tasks-preview">
+              <div class="preview-empty">All caught up!</div>
+            </div>
+          </div>
+
+          <!-- Chat CTA card -->
+          <div class="card card-chat" onclick="switchTab('chat')">
+            <div class="card-label">Ask ARIA</div>
+            <div class="cta-emoji">💬</div>
+            <div class="card-sub">Tap to chat</div>
+          </div>
+
+          <!-- Email card -->
+          <div class="card card-email" onclick="switchTab('more')">
+            <div class="card-label">Emails</div>
+            <div class="cta-emoji">📧</div>
+            <div class="card-sub">View inbox</div>
+          </div>
+
+        </div><!-- /bento -->
+      </div>
+    </div><!-- /home -->
+
+    <!-- CHAT ──────────────────────────────────────────── -->
+    <div class="screen" id="screen-chat">
+      <header class="screen-header">
+        <div class="sh-left">
+          <div class="aria-pill">A</div>
+          <div>
+            <div class="sh-title">ARIA</div>
+            <div class="sh-online">● Online</div>
+          </div>
+        </div>
+        <button class="hdr-icon" id="clearChatBtn" title="Clear chat">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/>
+          </svg>
+        </button>
+      </header>
+
+      <div class="chat-body" id="chatMessages">
+        <div class="chat-date-sep">Today</div>
+        <div class="msg-row ai">
+          <div class="msg-av">A</div>
+          <div class="msg-group">
+            <div class="bubble ai">
+              Hi! I'm ARIA 👋 I can help you manage your calendar, tasks, reminders, and send emails via Outlook. Try asking me something!
+            </div>
+            <div class="msg-ts">just now</div>
           </div>
         </div>
       </div>
 
-      <div class="chat-input-area">
-        <div class="quick-chips" id="quickChips">
+      <div class="chat-footer">
+        <div class="chips-row" id="quickChips">
           <button class="chip" data-msg="What's on my schedule today?">Today's schedule</button>
           <button class="chip" data-msg="Show my pending tasks">My tasks</button>
           <button class="chip" data-msg="Show my reminders">Reminders</button>
-          <button class="chip" data-msg="Check my recent emails">Recent emails</button>
+          <button class="chip" data-msg="Check my recent emails">Emails</button>
         </div>
-        <div class="input-row">
-          <button class="voice-btn" id="voiceBtn" title="Voice input">🎤</button>
-          <textarea class="chat-textarea" id="chatInput" placeholder="Ask ARIA anything…" rows="1"></textarea>
-          <button class="send-btn" id="sendBtn">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <div class="input-bar">
+          <button class="mic-btn" id="voiceBtn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0014 0"/><line x1="12" y1="19" x2="12" y2="22"/>
+            </svg>
+          </button>
+          <textarea id="chatInput" class="chat-input" placeholder="Message ARIA…" rows="1"></textarea>
+          <button id="sendBtn" class="send-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
             </svg>
           </button>
         </div>
       </div>
-    </section>
+    </div><!-- /chat -->
 
-    <!-- Events panel -->
-    <section class="panel" id="panel-events">
-      <div class="panel-header">
-        <h2>📅 Calendar</h2>
-        <button class="btn-primary" id="addEventBtn">+ Add Event</button>
+    <!-- CALENDAR ──────────────────────────────────────── -->
+    <div class="screen" id="screen-calendar">
+      <header class="screen-header">
+        <div class="sh-title-lg">Calendar</div>
+        <button class="btn-fab-sm" id="addEventBtn">+</button>
+      </header>
+      <div class="screen-scroll" id="eventsList">
+        <div class="list-placeholder">Loading events…</div>
       </div>
-      <div class="events-list" id="eventsList">
-        <div class="loading">Loading events…</div>
-      </div>
+    </div>
 
-      <!-- Add event form -->
-      <div class="modal" id="addEventModal" style="display:none">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h3>New Event</h3>
-            <button class="close-btn" onclick="closeModal('addEventModal')">×</button>
-          </div>
-          <form id="addEventForm">
-            <label>Title<input type="text" name="title" required /></label>
-            <label>Start Time<input type="datetime-local" name="start_time" required /></label>
-            <label>End Time<input type="datetime-local" name="end_time" /></label>
-            <label>Location<input type="text" name="location" /></label>
-            <label>Description<textarea name="description" rows="3"></textarea></label>
-            <label>Calendar
-              <select name="calendar">
-                <option value="local">Local</option>
-                <option value="microsoft">Microsoft / Outlook</option>
-                <option value="google">Google</option>
-              </select>
-            </label>
-            <div class="form-actions">
-              <button type="button" class="btn-ghost" onclick="closeModal('addEventModal')">Cancel</button>
-              <button type="submit" class="btn-primary">Create Event</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </section>
-
-    <!-- Tasks panel -->
-    <section class="panel" id="panel-tasks">
-      <div class="panel-header">
-        <h2>✅ Tasks</h2>
-        <button class="btn-primary" id="addTaskBtn">+ Add Task</button>
-      </div>
+    <!-- TASKS ─────────────────────────────────────────── -->
+    <div class="screen" id="screen-tasks">
+      <header class="screen-header">
+        <div class="sh-title-lg">Tasks</div>
+        <button class="btn-fab-sm" id="addTaskBtn">+</button>
+      </header>
       <div class="filter-row">
-        <button class="filter-chip active" data-status="">Active</button>
-        <button class="filter-chip" data-status="all">All</button>
-        <button class="filter-chip" data-status="completed">Completed</button>
+        <button class="fpill active" data-status="">Active</button>
+        <button class="fpill" data-status="all">All</button>
+        <button class="fpill" data-status="completed">Done ✓</button>
       </div>
-      <div class="tasks-list" id="tasksList">
-        <div class="loading">Loading tasks…</div>
+      <div class="screen-scroll" id="tasksList">
+        <div class="list-placeholder">Loading tasks…</div>
       </div>
+    </div>
 
-      <div class="modal" id="addTaskModal" style="display:none">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h3>New Task</h3>
-            <button class="close-btn" onclick="closeModal('addTaskModal')">×</button>
+    <!-- MORE ──────────────────────────────────────────── -->
+    <div class="screen" id="screen-more">
+      <header class="screen-header">
+        <div class="sh-title-lg">More</div>
+      </header>
+      <div class="screen-scroll">
+        <div class="more-block">
+          <div class="more-block-header">
+            <span class="more-block-title">Reminders &amp; Alarms</span>
+            <button class="btn-text" id="addReminderBtn">+ New</button>
           </div>
-          <form id="addTaskForm">
-            <label>Title<input type="text" name="title" required /></label>
-            <label>Description<textarea name="description" rows="2"></textarea></label>
-            <label>Priority
-              <select name="priority">
-                <option value="low">Low</option>
-                <option value="medium" selected>Medium</option>
-                <option value="high">High</option>
-                <option value="urgent">Urgent</option>
-              </select>
-            </label>
-            <label>Due Date<input type="datetime-local" name="due_date" /></label>
-            <label>Category<input type="text" name="category" placeholder="e.g. Work, Personal" /></label>
-            <div class="form-actions">
-              <button type="button" class="btn-ghost" onclick="closeModal('addTaskModal')">Cancel</button>
-              <button type="submit" class="btn-primary">Create Task</button>
-            </div>
-          </form>
+          <div id="remindersList"><div class="list-placeholder">Loading…</div></div>
+        </div>
+        <div class="more-block">
+          <div class="more-block-header">
+            <span class="more-block-title">Recent Emails</span>
+            <button class="btn-text" id="composeBtn">✉ Compose</button>
+          </div>
+          <div id="emailsList"><div class="list-placeholder">Loading…</div></div>
         </div>
       </div>
-    </section>
+    </div>
 
-    <!-- Reminders panel -->
-    <section class="panel" id="panel-reminders">
-      <div class="panel-header">
-        <h2>🔔 Reminders & Alarms</h2>
-        <button class="btn-primary" id="addReminderBtn">+ Add Reminder</button>
-      </div>
-      <div class="reminders-list" id="remindersList">
-        <div class="loading">Loading reminders…</div>
-      </div>
+  </div><!-- /screens-wrap -->
 
-      <div class="modal" id="addReminderModal" style="display:none">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h3>New Reminder</h3>
-            <button class="close-btn" onclick="closeModal('addReminderModal')">×</button>
-          </div>
-          <form id="addReminderForm">
-            <label>Title<input type="text" name="title" required /></label>
-            <label>When<input type="datetime-local" name="trigger_time" required /></label>
-            <label>Type
-              <select name="reminder_type">
-                <option value="reminder">Reminder</option>
-                <option value="alarm">Alarm</option>
-              </select>
-            </label>
-            <label>Notes<textarea name="description" rows="2"></textarea></label>
-            <div class="form-actions">
-              <button type="button" class="btn-ghost" onclick="closeModal('addReminderModal')">Cancel</button>
-              <button type="submit" class="btn-primary">Set Reminder</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </section>
+  <!-- ── Bottom navigation ─────────────────────────────── -->
+  <nav class="bottom-nav">
+    <button class="nav-item active" data-tab="home">
+      <svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 12L12 3l9 9"/><path d="M9 21V12h6v9"/>
+      </svg>
+      <span>Home</span>
+    </button>
+    <button class="nav-item" data-tab="chat">
+      <svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+      </svg>
+      <span>Chat</span>
+    </button>
+    <button class="nav-item" data-tab="calendar">
+      <svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+      </svg>
+      <span>Calendar</span>
+    </button>
+    <button class="nav-item" data-tab="tasks">
+      <svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+      </svg>
+      <span>Tasks</span>
+    </button>
+    <button class="nav-item" data-tab="more">
+      <svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/>
+      </svg>
+      <span>More</span>
+    </button>
+  </nav>
 
-    <!-- Emails panel -->
-    <section class="panel" id="panel-emails">
-      <div class="panel-header">
-        <h2>📧 Emails</h2>
-        <button class="btn-primary" id="composeBtn">✉ Compose</button>
-      </div>
-      <div class="emails-list" id="emailsList">
-        <div class="loading">Loading emails…</div>
-      </div>
+</div><!-- /app-shell -->
 
-      <div class="modal" id="composeModal" style="display:none">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h3>New Email</h3>
-            <button class="close-btn" onclick="closeModal('composeModal')">×</button>
-          </div>
-          <form id="composeForm">
-            <label>To<input type="text" name="to" placeholder="email1@example.com, email2@example.com" required /></label>
-            <label>CC<input type="text" name="cc" placeholder="(optional)" /></label>
-            <label>Subject<input type="text" name="subject" required /></label>
-            <label>Body<textarea name="body" rows="8" required></textarea></label>
-            <div class="form-actions">
-              <button type="button" class="btn-ghost" onclick="closeModal('composeModal')">Cancel</button>
-              <button type="submit" class="btn-primary">Send Email</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </section>
-  </main>
+<!-- ── Bottom sheets ────────────────────────────────────── -->
+<div class="sheet-overlay" id="sheetOverlay"></div>
 
-  <!-- Notification toast -->
-  <div class="toast" id="toast" style="display:none"></div>
+<!-- Add Event sheet -->
+<div class="sheet" id="sheetEvent">
+  <div class="sheet-handle"></div>
+  <div class="sheet-title">New Event</div>
+  <form id="formEvent">
+    <label class="field"><span>Title</span><input type="text" name="title" placeholder="Event name" required/></label>
+    <label class="field"><span>Start</span><input type="datetime-local" name="start_time" required/></label>
+    <label class="field"><span>End</span><input type="datetime-local" name="end_time"/></label>
+    <label class="field"><span>Location</span><input type="text" name="location" placeholder="Where?"/></label>
+    <label class="field"><span>Calendar</span>
+      <select name="calendar"><option value="local">Local</option><option value="microsoft">Outlook</option><option value="google">Google</option></select>
+    </label>
+    <button type="submit" class="btn-submit">Create Event</button>
+  </form>
+</div>
 
-  <!-- Reminder popup -->
-  <div class="reminder-popup" id="reminderPopup" style="display:none">
-    <div class="reminder-popup-icon">🔔</div>
-    <div class="reminder-popup-text" id="reminderPopupText"></div>
-    <button onclick="document.getElementById('reminderPopup').style.display='none'">Dismiss</button>
-  </div>
+<!-- Add Task sheet -->
+<div class="sheet" id="sheetTask">
+  <div class="sheet-handle"></div>
+  <div class="sheet-title">New Task</div>
+  <form id="formTask">
+    <label class="field"><span>Title</span><input type="text" name="title" placeholder="What needs to be done?" required/></label>
+    <label class="field"><span>Priority</span>
+      <select name="priority"><option value="low">Low</option><option value="medium" selected>Medium</option><option value="high">High</option><option value="urgent">Urgent 🔥</option></select>
+    </label>
+    <label class="field"><span>Due date</span><input type="datetime-local" name="due_date"/></label>
+    <label class="field"><span>Category</span><input type="text" name="category" placeholder="Work, Personal…"/></label>
+    <button type="submit" class="btn-submit">Create Task</button>
+  </form>
+</div>
 
-  <script src="/static/app.js"></script>
+<!-- Add Reminder sheet -->
+<div class="sheet" id="sheetReminder">
+  <div class="sheet-handle"></div>
+  <div class="sheet-title">New Reminder</div>
+  <form id="formReminder">
+    <label class="field"><span>Title</span><input type="text" name="title" placeholder="Remind me to…" required/></label>
+    <label class="field"><span>When</span><input type="datetime-local" name="trigger_time" required/></label>
+    <label class="field"><span>Type</span>
+      <select name="reminder_type"><option value="reminder">Reminder</option><option value="alarm">Alarm</option></select>
+    </label>
+    <button type="submit" class="btn-submit">Set Reminder</button>
+  </form>
+</div>
+
+<!-- Compose Email sheet -->
+<div class="sheet" id="sheetEmail">
+  <div class="sheet-handle"></div>
+  <div class="sheet-title">Compose Email</div>
+  <form id="formEmail">
+    <label class="field"><span>To</span><input type="text" name="to" placeholder="recipient@email.com" required/></label>
+    <label class="field"><span>CC</span><input type="text" name="cc" placeholder="Optional"/></label>
+    <label class="field"><span>Subject</span><input type="text" name="subject" required/></label>
+    <label class="field"><span>Body</span><textarea name="body" rows="5" placeholder="Write your message…" required></textarea></label>
+    <button type="submit" class="btn-submit">Send Email ✉</button>
+  </form>
+</div>
+
+<!-- ── Notifications ─────────────────────────────────────── -->
+<div class="toast" id="toast"></div>
+
+<div class="alert-pill" id="alertPill" style="display:none">
+  <span class="alert-bell">🔔</span>
+  <span id="alertText"></span>
+  <button onclick="document.getElementById('alertPill').style.display='none'">✕</button>
+</div>
+
+<script src="/static/app.js"></script>
 </body>
 </html>
