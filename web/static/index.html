@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ARIA — Personal Assistant</title>
+  <link rel="stylesheet" href="/static/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">
+        <div class="logo-icon">A</div>
+        <span class="logo-text">ARIA</span>
+      </div>
+      <button class="sidebar-toggle" id="sidebarToggle">&#9776;</button>
+    </div>
+
+    <nav class="sidebar-nav">
+      <button class="nav-btn active" data-panel="chat">
+        <span class="nav-icon">💬</span><span class="nav-label">Chat</span>
+      </button>
+      <button class="nav-btn" data-panel="events">
+        <span class="nav-icon">📅</span><span class="nav-label">Calendar</span>
+      </button>
+      <button class="nav-btn" data-panel="tasks">
+        <span class="nav-icon">✅</span><span class="nav-label">Tasks</span>
+      </button>
+      <button class="nav-btn" data-panel="reminders">
+        <span class="nav-icon">🔔</span><span class="nav-label">Reminders</span>
+      </button>
+      <button class="nav-btn" data-panel="emails">
+        <span class="nav-icon">📧</span><span class="nav-label">Emails</span>
+      </button>
+    </nav>
+
+    <div class="status-cards">
+      <div class="status-card">
+        <div class="status-number" id="statEvents">—</div>
+        <div class="status-label">Upcoming Events</div>
+      </div>
+      <div class="status-card">
+        <div class="status-number" id="statTasks">—</div>
+        <div class="status-label">Active Tasks</div>
+      </div>
+      <div class="status-card">
+        <div class="status-number" id="statReminders">—</div>
+        <div class="status-label">Reminders</div>
+      </div>
+    </div>
+
+    <div class="next-event-card" id="nextEventCard" style="display:none">
+      <div class="nec-label">Next Event</div>
+      <div class="nec-title" id="nextEventTitle"></div>
+      <div class="nec-time" id="nextEventTime"></div>
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <main class="main">
+    <!-- Chat panel -->
+    <section class="panel active" id="panel-chat">
+      <div class="panel-header">
+        <h2>Chat with ARIA</h2>
+        <div class="panel-actions">
+          <button class="btn-ghost" id="clearHistory" title="Clear conversation">🗑 Clear</button>
+        </div>
+      </div>
+
+      <div class="chat-messages" id="chatMessages">
+        <div class="message assistant">
+          <div class="message-avatar">A</div>
+          <div class="message-body">
+            <div class="message-text">
+              Hi! I'm ARIA, your personal assistant. I can help you manage your calendar, tasks, reminders, and emails. Try asking me:<br><br>
+              • <em>"What's on my schedule this week?"</em><br>
+              • <em>"Add a meeting tomorrow at 3pm"</em><br>
+              • <em>"Create a task: finish report, high priority"</em><br>
+              • <em>"Remind me to call John at 5pm"</em><br>
+              • <em>"Send an email to boss@example.com"</em>
+            </div>
+            <div class="message-time">just now</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chat-input-area">
+        <div class="quick-chips" id="quickChips">
+          <button class="chip" data-msg="What's on my schedule today?">Today's schedule</button>
+          <button class="chip" data-msg="Show my pending tasks">My tasks</button>
+          <button class="chip" data-msg="Show my reminders">Reminders</button>
+          <button class="chip" data-msg="Check my recent emails">Recent emails</button>
+        </div>
+        <div class="input-row">
+          <button class="voice-btn" id="voiceBtn" title="Voice input">🎤</button>
+          <textarea class="chat-textarea" id="chatInput" placeholder="Ask ARIA anything…" rows="1"></textarea>
+          <button class="send-btn" id="sendBtn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Events panel -->
+    <section class="panel" id="panel-events">
+      <div class="panel-header">
+        <h2>📅 Calendar</h2>
+        <button class="btn-primary" id="addEventBtn">+ Add Event</button>
+      </div>
+      <div class="events-list" id="eventsList">
+        <div class="loading">Loading events…</div>
+      </div>
+
+      <!-- Add event form -->
+      <div class="modal" id="addEventModal" style="display:none">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3>New Event</h3>
+            <button class="close-btn" onclick="closeModal('addEventModal')">×</button>
+          </div>
+          <form id="addEventForm">
+            <label>Title<input type="text" name="title" required /></label>
+            <label>Start Time<input type="datetime-local" name="start_time" required /></label>
+            <label>End Time<input type="datetime-local" name="end_time" /></label>
+            <label>Location<input type="text" name="location" /></label>
+            <label>Description<textarea name="description" rows="3"></textarea></label>
+            <label>Calendar
+              <select name="calendar">
+                <option value="local">Local</option>
+                <option value="microsoft">Microsoft / Outlook</option>
+                <option value="google">Google</option>
+              </select>
+            </label>
+            <div class="form-actions">
+              <button type="button" class="btn-ghost" onclick="closeModal('addEventModal')">Cancel</button>
+              <button type="submit" class="btn-primary">Create Event</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tasks panel -->
+    <section class="panel" id="panel-tasks">
+      <div class="panel-header">
+        <h2>✅ Tasks</h2>
+        <button class="btn-primary" id="addTaskBtn">+ Add Task</button>
+      </div>
+      <div class="filter-row">
+        <button class="filter-chip active" data-status="">Active</button>
+        <button class="filter-chip" data-status="all">All</button>
+        <button class="filter-chip" data-status="completed">Completed</button>
+      </div>
+      <div class="tasks-list" id="tasksList">
+        <div class="loading">Loading tasks…</div>
+      </div>
+
+      <div class="modal" id="addTaskModal" style="display:none">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3>New Task</h3>
+            <button class="close-btn" onclick="closeModal('addTaskModal')">×</button>
+          </div>
+          <form id="addTaskForm">
+            <label>Title<input type="text" name="title" required /></label>
+            <label>Description<textarea name="description" rows="2"></textarea></label>
+            <label>Priority
+              <select name="priority">
+                <option value="low">Low</option>
+                <option value="medium" selected>Medium</option>
+                <option value="high">High</option>
+                <option value="urgent">Urgent</option>
+              </select>
+            </label>
+            <label>Due Date<input type="datetime-local" name="due_date" /></label>
+            <label>Category<input type="text" name="category" placeholder="e.g. Work, Personal" /></label>
+            <div class="form-actions">
+              <button type="button" class="btn-ghost" onclick="closeModal('addTaskModal')">Cancel</button>
+              <button type="submit" class="btn-primary">Create Task</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Reminders panel -->
+    <section class="panel" id="panel-reminders">
+      <div class="panel-header">
+        <h2>🔔 Reminders & Alarms</h2>
+        <button class="btn-primary" id="addReminderBtn">+ Add Reminder</button>
+      </div>
+      <div class="reminders-list" id="remindersList">
+        <div class="loading">Loading reminders…</div>
+      </div>
+
+      <div class="modal" id="addReminderModal" style="display:none">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3>New Reminder</h3>
+            <button class="close-btn" onclick="closeModal('addReminderModal')">×</button>
+          </div>
+          <form id="addReminderForm">
+            <label>Title<input type="text" name="title" required /></label>
+            <label>When<input type="datetime-local" name="trigger_time" required /></label>
+            <label>Type
+              <select name="reminder_type">
+                <option value="reminder">Reminder</option>
+                <option value="alarm">Alarm</option>
+              </select>
+            </label>
+            <label>Notes<textarea name="description" rows="2"></textarea></label>
+            <div class="form-actions">
+              <button type="button" class="btn-ghost" onclick="closeModal('addReminderModal')">Cancel</button>
+              <button type="submit" class="btn-primary">Set Reminder</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Emails panel -->
+    <section class="panel" id="panel-emails">
+      <div class="panel-header">
+        <h2>📧 Emails</h2>
+        <button class="btn-primary" id="composeBtn">✉ Compose</button>
+      </div>
+      <div class="emails-list" id="emailsList">
+        <div class="loading">Loading emails…</div>
+      </div>
+
+      <div class="modal" id="composeModal" style="display:none">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3>New Email</h3>
+            <button class="close-btn" onclick="closeModal('composeModal')">×</button>
+          </div>
+          <form id="composeForm">
+            <label>To<input type="text" name="to" placeholder="email1@example.com, email2@example.com" required /></label>
+            <label>CC<input type="text" name="cc" placeholder="(optional)" /></label>
+            <label>Subject<input type="text" name="subject" required /></label>
+            <label>Body<textarea name="body" rows="8" required></textarea></label>
+            <div class="form-actions">
+              <button type="button" class="btn-ghost" onclick="closeModal('composeModal')">Cancel</button>
+              <button type="submit" class="btn-primary">Send Email</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Notification toast -->
+  <div class="toast" id="toast" style="display:none"></div>
+
+  <!-- Reminder popup -->
+  <div class="reminder-popup" id="reminderPopup" style="display:none">
+    <div class="reminder-popup-icon">🔔</div>
+    <div class="reminder-popup-text" id="reminderPopupText"></div>
+    <button onclick="document.getElementById('reminderPopup').style.display='none'">Dismiss</button>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

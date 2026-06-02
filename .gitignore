@@ -1,0 +1,6 @@
+personal_assistant.db
+__pycache__/
+*.pyc
+.env
+google_token.json
+*.db
